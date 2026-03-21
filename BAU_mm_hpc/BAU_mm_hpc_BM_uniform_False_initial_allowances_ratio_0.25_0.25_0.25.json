@@ -1,0 +1,26 @@
+{
+    "agent_types": [
+        "base",
+        "large",
+        "mm"
+    ],
+    "agent_counts": [
+        84,
+        6,
+        10
+    ],
+    "BM_uniform": false,
+    "fp_iterations": 30,
+    "initial_allowances_ratio": [
+        0.25,
+        0.25,
+        0.25
+    ],
+    "control_technology": [
+        0.13636363636363635,
+        0.75,
+        0.75
+    ],
+    "fp_config_str": "medium",
+    "Afloor": 0
+}
