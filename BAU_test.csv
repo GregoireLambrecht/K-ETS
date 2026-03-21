@@ -1,13 +1,13 @@
 path
-"BAU_test/BAU_test_BM_uniform_True_initial_allowances_ratio_[0.9, 0.9]_Afloor_0.json"
-"BAU_test/BAU_test_BM_uniform_True_initial_allowances_ratio_[0.9, 0.9]_Afloor_6.0459.json"
-"BAU_test/BAU_test_BM_uniform_True_initial_allowances_ratio_[0.45, 0.45]_Afloor_0.json"
-"BAU_test/BAU_test_BM_uniform_True_initial_allowances_ratio_[0.45, 0.45]_Afloor_6.0459.json"
-"BAU_test/BAU_test_BM_uniform_True_initial_allowances_ratio_[0.25, 0.25]_Afloor_0.json"
-"BAU_test/BAU_test_BM_uniform_True_initial_allowances_ratio_[0.25, 0.25]_Afloor_6.0459.json"
-"BAU_test/BAU_test_BM_uniform_False_initial_allowances_ratio_[0.9, 0.9]_Afloor_0.json"
-"BAU_test/BAU_test_BM_uniform_False_initial_allowances_ratio_[0.9, 0.9]_Afloor_6.0459.json"
-"BAU_test/BAU_test_BM_uniform_False_initial_allowances_ratio_[0.45, 0.45]_Afloor_0.json"
-"BAU_test/BAU_test_BM_uniform_False_initial_allowances_ratio_[0.45, 0.45]_Afloor_6.0459.json"
-"BAU_test/BAU_test_BM_uniform_False_initial_allowances_ratio_[0.25, 0.25]_Afloor_0.json"
-"BAU_test/BAU_test_BM_uniform_False_initial_allowances_ratio_[0.25, 0.25]_Afloor_6.0459.json"
+BAU_test/BAU_test_BM_uniform_True_initial_allowances_ratio_0.9_0.9_Afloor_0.json
+BAU_test/BAU_test_BM_uniform_True_initial_allowances_ratio_0.9_0.9_Afloor_6.0459.json
+BAU_test/BAU_test_BM_uniform_True_initial_allowances_ratio_0.45_0.45_Afloor_0.json
+BAU_test/BAU_test_BM_uniform_True_initial_allowances_ratio_0.45_0.45_Afloor_6.0459.json
+BAU_test/BAU_test_BM_uniform_True_initial_allowances_ratio_0.25_0.25_Afloor_0.json
+BAU_test/BAU_test_BM_uniform_True_initial_allowances_ratio_0.25_0.25_Afloor_6.0459.json
+BAU_test/BAU_test_BM_uniform_False_initial_allowances_ratio_0.9_0.9_Afloor_0.json
+BAU_test/BAU_test_BM_uniform_False_initial_allowances_ratio_0.9_0.9_Afloor_6.0459.json
+BAU_test/BAU_test_BM_uniform_False_initial_allowances_ratio_0.45_0.45_Afloor_0.json
+BAU_test/BAU_test_BM_uniform_False_initial_allowances_ratio_0.45_0.45_Afloor_6.0459.json
+BAU_test/BAU_test_BM_uniform_False_initial_allowances_ratio_0.25_0.25_Afloor_0.json
+BAU_test/BAU_test_BM_uniform_False_initial_allowances_ratio_0.25_0.25_Afloor_6.0459.json
