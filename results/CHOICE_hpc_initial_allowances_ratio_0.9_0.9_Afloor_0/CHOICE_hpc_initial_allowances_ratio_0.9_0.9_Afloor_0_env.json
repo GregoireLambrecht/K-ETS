@@ -1,0 +1,41 @@
+{
+  "kappa": 18.1377,
+  "T": 100,
+  "agent_params_list": [
+    [
+      34.578,
+      0.85,
+      0.37,
+      33.25,
+      67.62,
+      93.50000000000001,
+      100,
+      4.25,
+      -1
+    ],
+    [
+      374.85,
+      0.85,
+      0.37,
+      33.25,
+      67.62,
+      654.5000000000001,
+      700,
+      29.75,
+      -1
+    ]
+  ],
+  "agent_counts": [
+    93,
+    7
+  ],
+  "generate_P_func": "generate_prices_base",
+  "A0": 6.0459,
+  "P0": 112.0,
+  "Afloor": 0,
+  "market_impact_func": "market_impact_base",
+  "generate_eps0_func": "white_noise_A_base",
+  "generate_eps_idiosyncratic_func": "idiosyncratic_noise_base",
+  "A_scale": 6.0459,
+  "P_scale": 112.0
+}
