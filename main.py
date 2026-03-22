@@ -42,6 +42,7 @@ def main():
 
     # 5. Run Fictitious Play
     # Using the fp_config object mapped from the string in the JSON
+    
     ensemble = fictitious_play(
         env=env, 
         config=config['fp_config'], 
@@ -51,12 +52,33 @@ def main():
         # save_path=config['folder_name'] 
     )
 
-    # --- 6. Saving ---
-    # Save the trained policies
+    # # --- 6. Saving ---
+    # # Save the trained policies
     model_path = f"{config['folder_name']}/{config['scenario_name']}.eqx"
     eqx.tree_serialise_leaves(model_path, env.policies)
+
+    env_init_params = dict(
+    kappa=base_params.KAPPA_BASE,
+    T=base_params.T_BASE,
+    agent_params_list=config["agent_params_list"],
+    agent_counts=config["agent_counts"],
+    generate_P_func="generate_prices_base",
+    A0=base_params.A0_BASE,
+    P0=base_params.P_mean,
+    Afloor=config["Afloor"],
+    market_impact_func="market_impact_base",
+    generate_eps0_func="white_noise_A_base",
+    generate_eps_idiosyncratic_func="idiosyncratic_noise_base",
+    A_scale=base_params.A_SCALE_BASE,
+    P_scale=base_params.P_SCALE_BASE,
+    )
+
+    model_path_env = f"{config['folder_name']}/{config['scenario_name']}_env.json"
+    with open(model_path_env, "w") as f:
+        json.dump(env_init_params, f, indent=2)
     
-    # Save metadata for the audit trail
+    
+    # # Save metadata for the audit trail
     with open(f"{config['folder_name']}/details.txt", "w") as f:
         f.write("K-ETS Simulation Details\n")
         f.write("========================\n")
