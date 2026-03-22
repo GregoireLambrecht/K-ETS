@@ -1,9 +1,0 @@
-K-ETS Simulation Details
-========================
-Scenario Name: CHOICE_hpc_initial_allowances_ratio_0.9_0.9_Afloor_6.0459
-Agent Types: ['base', 'large']
-Counts: [93, 7]
-Initial Ratios: [0.9, 0.9]
-BM Uniform: False
-Control Tech (Eta): [-1, -1]
-FP Config Type: medium
