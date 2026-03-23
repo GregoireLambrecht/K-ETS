@@ -94,7 +94,7 @@ fp_configs = {
 
     'full': {
     'list_T': [10, 50, 80, 100, 365],
-    'list_iterations': [2000, 300, 100, 50, 10],
+    'list_iterations': [4000, 1000, 500, 500, 500],
     'list_lr': [1e-4, 1e-5, 1e-5, 1e-5, 1e-5], 
     'batch_size': 500, 
     'list_gamma': [0, 0]
