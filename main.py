@@ -24,7 +24,7 @@ def main():
     # 4. Initialize Environment with parsed params from config dict
     env = ExogenousMarketEnvJAX(
         kappa=base_params.KAPPA_BASE, 
-        T=base_params.T_BASE, 
+        T=365, 
         agent_params_list=config['agent_params_list'], 
         agent_counts=config['agent_counts'], 
         generate_P_func=base_params.generate_prices_ou, 
@@ -60,7 +60,7 @@ def main():
 
     env_init_params = dict(
     kappa=base_params.KAPPA_BASE,
-    T=base_params.T_BASE,
+    T=365,
     agent_params_list=config["agent_params_list"],
     agent_counts=config["agent_counts"],
     generate_P_func="generate_prices_ou",
