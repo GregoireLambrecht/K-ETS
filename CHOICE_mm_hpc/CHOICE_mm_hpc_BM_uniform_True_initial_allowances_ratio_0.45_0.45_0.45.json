@@ -5,9 +5,9 @@
         "mm"
     ],
     "agent_counts": [
-        84,
-        6,
-        10
+        76.5,
+        13.5,
+        10.0
     ],
     "BM_uniform": true,
     "fp_iterations": 30,

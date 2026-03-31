@@ -245,7 +245,8 @@ def train_multigrid_horizon(env, config, key):
         
         # Update Environment Horizon
         env.T = float(T_horizon)
-        
+        env.dt = float(365/T_horizon)
+
         # Update Learning Rate in the existing opt_state
         # This keeps the Adam 'm' and 'v' buffers but changes the step size
         new_lr = config['list_lr'][i]
@@ -274,6 +275,16 @@ def train_multigrid_horizon(env, config, key):
         
         master_loss_history.append(losses)
         print(f"Final Loss for T={T_horizon}: {losses[-1]:.6f}")
+        # states, actions, A_history, rewards = env.rollout_market(k_train, env.policies)
+            
+        # # Generate the panel
+        # generate_report_jax(
+        #     env, 
+        #     states, 
+        #     actions, 
+        #     rewards, 
+        #     save = False
+        # )
 
     # plt.plot(jnp.concatenate(master_loss_history))
 
@@ -765,9 +776,13 @@ def plot_densities_jax(env, states, actions, rewards):
     axes[0].legend()
 
     # Plot 2: Churn Rate
-    trading_vol = np.abs(to_np(actions[..., 0])).sum(axis=1) 
-    init_q = to_np(states[:, 0, :, 1])
-    churn = (trading_vol / (init_q + 1e-9)).mean(axis=1) 
+    # trading_vol = np.abs(to_np(actions[..., 0])).sum(axis=1) 
+    # init_q = to_np(states[:, 0, :, 1])
+    # churn = (trading_vol / (init_q + 1e-9)).mean(axis=1) 
+
+    trading_vol = np.abs(np.array(actions[..., 0])).sum(axis=1).sum(axis=1)
+    init_q = np.array(states[:, 0, :, 1]).sum(axis=1)
+    churn = trading_vol / (init_q + 1e-9)
     # sns.kdeplot(churn, fill=True, ax=axes[1])
     plot_normalized_kde(churn, axes[1], '', '#1f77b4')
     axes[1].axvline(np.mean(churn), color='red', label=f'Mean: {np.mean(churn):.3f}')
@@ -896,7 +911,7 @@ def get_flashy_color(hex_color):
     hsv[2] = 1.0 
     return mcolors.hsv_to_rgb(hsv)
 
-def evaluate_and_plot(env, policies, num_simulations=100, key=jax.random.PRNGKey(0)):
+def evaluate_and_plot(env, policies, num_simulations=100, key=jax.random.PRNGKey(0),plot_report = True):
     """
     Runs multiple market simulations in parallel and plots the resulting densities.
     """
@@ -915,8 +930,8 @@ def evaluate_and_plot(env, policies, num_simulations=100, key=jax.random.PRNGKey
     states, actions, A_history, rewards = vmapped_rollout(batch_keys, policies)
     
     # 4. Use our density plotting function
-    print("Generating Density Plots...")
-    plot_densities_jax(env, states, actions, rewards)
+    if plot_report:
+        plot_densities_jax(env, states, actions, rewards)
     
     return states, actions, A_history, rewards
 

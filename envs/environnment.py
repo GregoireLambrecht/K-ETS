@@ -1,6 +1,7 @@
 import jax
 import jax.numpy as jnp
 from jax import vmap
+import math
 
 class ExogenousMarketEnvJAX:
     def __init__(self, kappa, T, agent_params_list, agent_counts, generate_P_func, A0, P0, Afloor, market_impact_func, generate_eps0_func, generate_eps_idiosyncratic_func,A_scale=1.0, P_scale=1.0):
@@ -12,6 +13,7 @@ class ExogenousMarketEnvJAX:
         self.A0 = A0
         self.P0 = P0
         self.Afloor = Afloor
+        self.dt = 365/self.T
         
         # 2. Market Composition (params_list shape: [N_types, 9])
         #Theta0/T,ef,eg,cf,cg,cap_f,cap_xi,sigma_eps
@@ -173,7 +175,7 @@ class ExogenousMarketEnvJAX:
         # The price shift is the average of these impacts
         mean_impact = jnp.mean(individual_impacts)
         
-        return jnp.maximum(A_t + mean_impact + eps0_t, self.Afloor)
+        return jnp.maximum(A_t + mean_impact*self.dt + eps0_t*math.sqrt(self.dt), self.Afloor)
 
     def get_eps0_trajectory(self, key):
         """Generates the exogenous volatility for the allowance price."""

@@ -6,7 +6,8 @@ import os
 import base_params
 from envs.environnment import ExogenousMarketEnvJAX # Fixed typo in environment
 from args_parser import get_parser, load_all_from_json # Use the new loading logic
-from utils import fictitious_play
+from utils import fictitious_play, evaluate_and_plot
+import numpy as np
 
 def main():
     # 1. Get the path from the parser
@@ -26,7 +27,7 @@ def main():
         T=base_params.T_BASE, 
         agent_params_list=config['agent_params_list'], 
         agent_counts=config['agent_counts'], 
-        generate_P_func=base_params.generate_prices_base, 
+        generate_P_func=base_params.generate_prices_ou, 
         A0=base_params.A0_BASE, 
         P0=base_params.P_mean, 
         Afloor=config['Afloor'],
@@ -62,7 +63,7 @@ def main():
     T=base_params.T_BASE,
     agent_params_list=config["agent_params_list"],
     agent_counts=config["agent_counts"],
-    generate_P_func="generate_prices_base",
+    generate_P_func="generate_prices_ou",
     A0=base_params.A0_BASE,
     P0=base_params.P_mean,
     Afloor=config["Afloor"],
@@ -90,5 +91,30 @@ def main():
         f.write(f"Control Tech (Eta): {config['control_technology']}\n")
         f.write(f"FP Config Type: {config.get('fp_config_str', 'default')}\n")
 
+    states, actions, A_history, rewards = evaluate_and_plot(
+        env,
+        env.policies,
+        num_simulations=100,
+        key=jax.random.PRNGKey(33),
+        plot_report=False
+    )
+
+    results_path = f"{config['folder_name']}/{config['scenario_name']}_data.npz"
+
+    # Save all arrays into a single compressed file
+    # We convert to numpy explicitly to ensure they are off-device 
+    # and compatible with standard loading tools
+    np.savez_compressed(
+        results_path,
+        states=np.array(states),
+        actions=np.array(actions),
+        A_history=np.array(A_history),
+        rewards=np.array(rewards)
+    )
+
 if __name__ == "__main__":
     main()
+
+
+# data = np.load("your_folder/your_scenario_results.npz")
+# actions = data['actions']

@@ -26,24 +26,59 @@ SIGMA_EPS_BASE = CAP_XI_BASE*EF_BASE/20
 
 A0_BASE = 8637*KRW_TO_USD 
 
-P_mean = 160000*KRW_TO_USD
-P_hz = 10
-P_amplitude = 40000*KRW_TO_USD
-EPS0_P = 10
+# P_mean = 160000*KRW_TO_USD
+# P_hz = 10
+# P_amplitude = 40000*KRW_TO_USD
+# EPS0_P = 10
 
-T_BASE = 100
+# def generate_prices_base(key, T):
+#     times = (jnp.arange(T + 1, dtype = float)/T)
+#     return jnp.maximum(P_mean + P_amplitude*jnp.sin(times*P_hz) + jax.random.normal(key, (int(T+1),))*EPS0_P, 0)
+
+# P_SCALE_BASE = jax.std(generate_prices_base(jax.random.PRNGKey(27), T_BASE))
+
+THETA_P = 0.01
+MU_P = 79
+SIGMA_P = 6
+P0 = 75
+
+def generate_prices_ou(key, T):
+    """
+    Generates a price path using the Ornstein-Uhlenbeck process.
+    T: Number of time steps (days)
+    P_start: The initial price to start the simulation
+    """
+    dt = 365/T
+    # 1. Generate all random shocks at once for JAX efficiency
+    # shocks = np.sqrt(dt)*jax.random.normal(key, (int(T),))
+    shocks = jax.random.normal(key, (int(T),))
+    
+    # 2. Define the scan function (Recursive step)
+    # The 'state' is the price at time t-1
+    def step(current_p, epsilon):
+        # OU formula: dP = theta * (mu - P) * dt + sigma * dW
+        # Assuming dt = 1 (daily steps)
+        next_p = current_p + THETA_P * (MU_P - current_p)*dt + SIGMA_P * epsilon
+        
+        # Ensure prices stay non-negative
+        next_p = jnp.maximum(next_p, 0.0)
+        
+        return next_p, next_p
+
+    # 3. Use jax.lax.scan to loop through T steps efficiently
+    _, price_path = jax.lax.scan(step, P0, shocks)
+    
+    # Prepend the starting price to the result
+    return jnp.concatenate([jnp.array([P0]), price_path])
+
+
+P_SCALE_BASE = P0
+A_SCALE_BASE = A0_BASE
+
 
 THETA0_100_BASE = CAP_XI_BASE*EF_BASE
 A_FLOOR_NULL = 0
 A_FLOOR_BASE = A0_BASE
-
-def generate_prices_base(key, T):
-    times = (jnp.arange(T + 1, dtype = float)/T)
-    return jnp.maximum(P_mean + P_amplitude*jnp.sin(times*P_hz) + jax.random.normal(key, (int(T+1),))*EPS0_P, 0)
-
-# P_SCALE_BASE = jax.std(generate_prices_base(jax.random.PRNGKey(27), T_BASE))
-P_SCALE_BASE = P_mean
-A_SCALE_BASE = A0_BASE
 
 
 def market_impact_base(f):
@@ -93,26 +128,26 @@ fp_configs = {
     'list_gamma': [0, 0]}, 
 
     'full': {
-    'list_T': [10, 50, 80, 100, 365],
-    'list_iterations': [4000, 1000, 500, 500, 500],
+    'list_T': [10, 100, 200, 365],
+    'list_iterations': [500, 500, 500, 1000],
     'list_lr': [1e-4, 1e-5, 1e-5, 1e-5, 1e-5], 
     'batch_size': 500, 
     'list_gamma': [0, 0]
 }
 }
 
-ENV_BASE = envs.environnment.ExogenousMarketEnvJAX(
-    kappa=KAPPA_BASE, T=T_BASE, 
-    agent_params_list=[PRIVATE_GENERATOR], 
-    agent_counts=[50], 
-    generate_P_func=generate_prices_base, 
-    A0=A0_BASE, P0=P_mean, Afloor= A_FLOOR_NULL,
-    market_impact_func=market_impact_base,
-    generate_eps0_func=white_noise_A_base,
-    generate_eps_idiosyncratic_func=idiosyncratic_noise_base, 
-    A_scale=A_SCALE_BASE, 
-    P_scale=P_SCALE_BASE
-)
+# ENV_BASE = envs.environnment.ExogenousMarketEnvJAX(
+#     kappa=KAPPA_BASE, T=T_BASE, 
+#     agent_params_list=[PRIVATE_GENERATOR], 
+#     agent_counts=[50], 
+#     generate_P_func=generate_prices_base, 
+#     A0=A0_BASE, P0=P_mean, Afloor= A_FLOOR_NULL,
+#     market_impact_func=market_impact_base,
+#     generate_eps0_func=white_noise_A_base,
+#     generate_eps_idiosyncratic_func=idiosyncratic_noise_base, 
+#     A_scale=A_SCALE_BASE, 
+#     P_scale=P_SCALE_BASE
+# )
 
 
 import json

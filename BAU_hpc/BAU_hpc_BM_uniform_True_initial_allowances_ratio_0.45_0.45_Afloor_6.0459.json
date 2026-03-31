@@ -4,8 +4,8 @@
         "large"
     ],
     "agent_counts": [
-        93,
-        7
+        85.0,
+        15.0
     ],
     "BM_uniform": true,
     "fp_iterations": 30,
