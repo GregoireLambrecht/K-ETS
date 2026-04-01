@@ -42,6 +42,7 @@ MU_P = 79
 SIGMA_P = 6
 P0 = 75
 
+
 def generate_prices_ou(key, T):
     """
     Generates a price path using the Ornstein-Uhlenbeck process.
@@ -129,7 +130,7 @@ fp_configs = {
 
     'full': {
     'list_T': [10, 100, 200, 365],
-    'list_iterations': [500, 500, 500, 1000],
+    'list_iterations': [500, 500, 500, 3000],
     'list_lr': [1e-4, 1e-5, 1e-5, 1e-5, 1e-5], 
     'batch_size': 500, 
     'list_gamma': [0, 0]
